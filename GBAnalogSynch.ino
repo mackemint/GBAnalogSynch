@@ -5,21 +5,22 @@
  */
 
 const unsigned int LED = 13;
-const unsigned int CLOCK_NOTE = 36;
+const unsigned int CLOCK_NOTE = 0;
 const unsigned int MIDI_CHANNEL = 16;
 
-// Gameboy Clock pin TODO
+// Gameboy Analog sync in pin
 const unsigned int pinGBSerialOut = 17;
 
-// Flag for incoming Note message
+// State of Analog sync pin
 bool pinState = LOW;
 
-// Init time stamps
+// Init times
 unsigned long timeStampOnNoteOn = 0; //Set when OnNoteOn event is triggered
 unsigned long pulseLength = 15; // 15ms pulse length (timer interrupt in microseconds)
 
 void setup() 
 {
+  //Set listener
   usbMIDI.setHandleNoteOn(OnNoteOn);
   pinMode(pinGBSerialOut, OUTPUT);     
   pinMode(LED, OUTPUT);    
@@ -28,7 +29,7 @@ void setup()
 void loop() 
 {
   usbMIDI.read(MIDI_CHANNEL); // USB MIDI receive 
-  isTimeOut(millis());
+  isTimeOut(millis()); //Time to give a LOW?
 }
 
 void isTimeOut(unsigned long currentTimeMillis)
